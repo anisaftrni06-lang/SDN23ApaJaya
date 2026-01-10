@@ -31,8 +31,8 @@
                     <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-full mb-4 shadow-sm border border-gray-100">
                         <img src="https://iili.io/fO9YzBt.png" alt="Logo SDN 23" class="w-20 h-20 object-contain">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800">MANAJEMEN BOS</h2>
-                    <p class="text-gray-500 text-sm">SDN 23 APA JAYA</p>
+                    <h2 class="text-2xl font-bold text-gray-800">Login Sistem Cloud</h2>
+                    <p class="text-gray-500 text-sm">SDN 23 Apa Jaya</p>
                 </div>
                 
                 <form id="login-form" class="space-y-5">
@@ -47,9 +47,9 @@
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
                     </div>
                     <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow-lg transform active:scale-95 transition-all">
-                        Masuk
+                        Masuk & Sinkronisasi
                     </button>
-                    <p class="text-[10px] text-center text-gray-400 mt-2">*ANISA FITRIANI*</p>
+                    <p class="text-[10px] text-center text-gray-400 mt-2">v2.1 - Cloud Link Active</p>
                 </form>
             </div>
         </div>
@@ -65,7 +65,7 @@
             </div>
             <div class="flex items-center justify-center text-[10px] text-blue-300 uppercase tracking-widest font-semibold">
                 <span id="cloud-indicator" class="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span> 
-                <span id="cloud-text">Status Online</span>
+                <span id="cloud-text">Cloud Standby</span>
             </div>
         </div>
         <nav class="mt-4 px-2 space-y-1 flex-1 overflow-y-auto">
@@ -86,7 +86,7 @@
             </button>
         </nav>
         <div class="p-4 bg-blue-950/50 text-[10px] text-blue-400 text-center border-t border-blue-800">
-            Sistem Manajemen BOS v2.1, Di Buat Oleh Admin SDN 23 Apa Jaya 
+            Sistem Manajemen BOS v2.1
         </div>
     </aside>
 
@@ -94,7 +94,7 @@
         <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
             <h2 id="page-title" class="text-lg font-semibold text-gray-700">Beranda</h2>
             <div class="flex items-center gap-4">
-                <button onclick="logout()" class="text-sm font-bold text-red-600 hover:bg-red-50 px-3 py-1 rounded transition-colors">Keluar</button>
+                <button onclick="logout()" class="text-sm font-bold text-red-600 hover:bg-red-50 px-3 py-1 rounded transition-colors">Logout</button>
             </div>
         </header>
 
@@ -103,7 +103,7 @@
             <section id="page-beranda" class="space-y-6">
                 <div class="bg-blue-600 rounded-xl p-8 text-white shadow-lg bg-gradient-to-r from-blue-700 to-blue-500">
                     <h1 class="text-3xl font-bold mb-2">Selamat Datang</h1>
-                    <p class="text-blue-100 opacity-90">Sistem Manajemen BOS SDN 23 Apa Jaya.</p>
+                    <p class="text-blue-100 opacity-90">Sistem Manajemen BOS SDN 23 Apa Jaya terhubung ke Database Cloud.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
@@ -121,7 +121,7 @@
             <section id="page-laporan" class="hidden">
                 <div class="bg-white rounded-lg shadow-xl overflow-hidden border border-gray-100">
                     <div class="p-6 border-b flex justify-between items-center bg-gray-50">
-                        <h3 class="text-xl font-bold text-gray-800">Riwayat</h3>
+                        <h3 class="text-xl font-bold text-gray-800">Riwayat Sinkronisasi Cloud</h3>
                         <button onclick="syncDataFromCloud()" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">Update Data</button>
                     </div>
                     <div class="overflow-x-auto">
@@ -136,7 +136,7 @@
                                 </tr>
                             </thead>
                             <tbody id="laporan-body" class="divide-y divide-gray-100">
-                                <tr><td colspan="5" class="px-6 py-10 text-center text-gray-400 italic">Memuat data...</td></tr>
+                                <tr><td colspan="5" class="px-6 py-10 text-center text-gray-400 italic">Memuat data dari cloud...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -165,7 +165,7 @@
                                 <input type="text" id="bd_nip" class="mt-1 block w-full border rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                             </div>
                         </div>
-                        <button type="button" onclick="savePJ()" class="w-full bg-blue-700 text-white py-3 rounded-xl font-bold hover:bg-blue-800 shadow-lg transform active:scale-95 transition-all mt-4">Simpan</button>
+                        <button type="button" onclick="savePJ()" class="w-full bg-blue-700 text-white py-3 rounded-xl font-bold hover:bg-blue-800 shadow-lg transform active:scale-95 transition-all mt-4">Simpan Perubahan Cloud</button>
                     </form>
                 </div>
             </section>
@@ -214,7 +214,7 @@
                              <input type="number" id="pjk_daerah" placeholder="Pjk Daer" class="border p-2 rounded text-sm">
                         </div>
 
-                        <button type="button" onclick="saveKuitansi()" class="w-full bg-blue-700 text-white py-3 rounded-lg font-bold shadow-md hover:bg-blue-800 transition">Kirim</button>
+                        <button type="button" onclick="saveKuitansi()" class="w-full bg-blue-700 text-white py-3 rounded-lg font-bold shadow-md hover:bg-blue-800 transition">Kirim ke Google Sheet</button>
                     </form>
                 </div>
             </section>
