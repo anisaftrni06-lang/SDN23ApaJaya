@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen BOS SDN 23 Apa Jaya - Cloud Sync</title>
+    <title>Manajemen BOS SDN 23 Apa Jaya</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -11,17 +11,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .sidebar-active { background-color: #1e40af; border-left: 4px solid #fde047; }
-        .loader { border-top-color: #3498db; animation: spinner 1.5s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media print { .no-print { display: none; } }
+        .dropdown-animate { transform-origin: top right; transition: all 0.2s ease-out; }
     </style>
 </head>
 <body class="bg-gray-50 flex h-screen overflow-hidden">
-
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 z-[200] bg-white/80 flex flex-col items-center justify-center hidden">
-        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-        <p class="text-blue-900 font-semibold animate-pulse">Tunggu Sebentar...</p>
-    </div>
 
     <!-- Login Section -->
     <div id="login-screen" class="fixed inset-0 z-[100] bg-blue-700 flex items-center justify-center p-4">
@@ -31,44 +25,42 @@
                     <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-full mb-4 shadow-sm border border-gray-100">
                         <img src="https://iili.io/fO9YzBt.png" alt="Logo SDN 23" class="w-20 h-20 object-contain">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800">MANAJEMEN BOS</h2>
-                    <p class="text-gray-500 text-sm">SDN 23 APA JAYA</p>
+                    <h2 class="text-2xl font-bold text-gray-800">Login Sistem</h2>
+                    <p class="text-gray-500 text-sm">SDN 23 Apa Jaya</p>
                 </div>
                 
                 <form id="login-form" class="space-y-5">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Username</label>
-                        <input type="text" id="username_input" 
+                        <input type="text" id="username_input" placeholder="Masukkan username" 
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Kata Sandi</label>
-                        <input type="password" id="password_input" 
+                        <input type="password" id="password_input" placeholder="Masukkan sandi" 
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
                     </div>
                     <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow-lg transform active:scale-95 transition-all">
-                        Masuk 
+                        Masuk ke Sistem
                     </button>
-                    <p class="text-[10px] text-center text-gray-400 mt-2">*Anisa Fitriani*</p>
+                    <div id="login-error" class="hidden text-red-500 text-sm text-center font-medium mt-2">
+                        Username atau Sandi salah!
+                    </div>
                 </form>
+            </div>
+            <div class="bg-gray-50 py-4 px-8 text-center border-t">
+                <p class="text-xs text-gray-400">© 2026 SDN 23 Apa Jaya. All rights reserved.</p>
             </div>
         </div>
     </div>
 
     <!-- Sidebar -->
-    <aside id="main-sidebar" class="w-64 bg-blue-900 text-white flex-shrink-0 hidden flex flex-col">
-        <div class="p-6 border-b border-blue-700">
-            <div class="flex items-center justify-center mb-4">
-                <div class="bg-white p-1.5 rounded-lg shadow-sm">
-                    <img src="https://iili.io/feuvtrg.png" alt="Logo Nav" class="w-10 h-10 object-contain">
-                </div>
-            </div>
-            <div class="flex items-center justify-center text-[10px] text-blue-300 uppercase tracking-widest font-semibold">
-                <span id="cloud-indicator" class="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span> 
-                <span id="cloud-text">Online</span>
-            </div>
+    <aside id="main-sidebar" class="w-64 bg-blue-900 text-white flex-shrink-0 no-print hidden">
+        <div class="p-6">
+            <h1 class="text-xl font-bold border-b border-blue-700 pb-4">SDN 23 Apa Jaya</h1>
+            <p class="text-xs text-blue-300 mt-2 uppercase tracking-widest">Manajemen BOS</p>
         </div>
-        <nav class="mt-4 px-2 space-y-1 flex-1 overflow-y-auto">
+        <nav class="mt-4 px-2 space-y-1">
             <button onclick="showPage('beranda')" id="nav-beranda" class="w-full text-left px-4 py-3 rounded transition hover:bg-blue-800 flex items-center">
                 <span class="mr-3">🏠</span> Beranda
             </button>
@@ -81,97 +73,90 @@
             <button onclick="showPage('laporan')" id="nav-laporan" class="w-full text-left px-4 py-3 rounded transition hover:bg-blue-800 flex items-center">
                 <span class="mr-3">📋</span> Laporan Kuitansi
             </button>
-            <button onclick="syncDataFromCloud()" class="w-full text-left px-4 py-3 rounded transition hover:bg-blue-800 flex items-center text-blue-300 border-t border-blue-800 mt-4 pt-4">
-                <span class="mr-3">🔄</span> Refresh 
-            </button>
         </nav>
-        <div class="p-4 bg-blue-950/50 text-[10px] text-blue-400 text-center border-t border-blue-800">
-            Sistem Manajemen BOS UPT SDN 23 Apa Jaya Di Buat Oleh : Anisa Fitrianiv2.1
-        </div>
     </aside>
 
+    <!-- Main Content -->
     <main id="main-content" class="flex-1 flex flex-col overflow-hidden hidden">
-        <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
+        <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center no-print">
             <h2 id="page-title" class="text-lg font-semibold text-gray-700">Beranda</h2>
+            
             <div class="flex items-center gap-4">
-                <button onclick="logout()" class="text-sm font-bold text-red-600 hover:bg-red-50 px-3 py-1 rounded transition-colors">Logout</button>
+                <div class="text-sm text-gray-500 hidden md:block" id="current-date-display"></div>
+                
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleUserDropdown()" class="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors border">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center border overflow-hidden">
+                            <img src="https://iili.io/fO9YzBt.png" alt="Profile" class="w-6 h-6 object-contain">
+                        </div>
+                        <span id="user-display-name" class="text-sm font-semibold text-gray-700 uppercase">SDN23AJ</span>
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border z-50 overflow-hidden dropdown-animate">
+                        <div class="px-4 py-3 border-b bg-gray-50">
+                            <p class="text-xs text-gray-500">Masuk sebagai:</p>
+                            <p class="text-sm font-bold text-gray-800">Administrator</p>
+                        </div>
+                        <button onclick="logout()" class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 flex items-center transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            Keluar
+                        </button>
+                    </div>
+                </div>
             </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-8" id="content-area">
-            <!-- Page Beranda -->
             <section id="page-beranda" class="space-y-6">
-                <div class="bg-blue-600 rounded-xl p-8 text-white shadow-lg bg-gradient-to-r from-blue-700 to-blue-500">
-                    <h1 class="text-3xl font-bold mb-2">Selamat Datang</h1>
-                    <p class="text-blue-100 opacity-90">Sistem Manajemen BOS SDN 23 Apa Jaya.</p>
+                <div class="bg-blue-600 rounded-xl p-8 text-white shadow-lg">
+                    <h1 class="text-3xl font-bold mb-2 text-white">Selamat Datang!</h1>
+                    <p class="text-blue-100">Aplikasi Manajemen BOS SDN 23 Apa Jaya.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
-                        <p class="text-sm text-gray-500 font-medium uppercase">Kuitansi Tersimpan</p>
-                        <p id="stat-total" class="text-3xl font-bold text-gray-800">0</p>
+                        <p class="text-sm text-gray-500 font-medium">Total Kuitansi</p>
+                        <p id="stat-total" class="text-2xl font-bold text-gray-800">0</p>
                     </div>
                     <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
-                        <p class="text-sm text-gray-500 font-medium uppercase">Total Pengeluaran</p>
-                        <p id="stat-amount" class="text-3xl font-bold text-gray-800">Rp 0</p>
+                        <p class="text-sm text-gray-500 font-medium">Total Pengeluaran</p>
+                        <p id="stat-amount" class="text-2xl font-bold text-gray-800">Rp 0</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Page Laporan -->
-            <section id="page-laporan" class="hidden">
-                <div class="bg-white rounded-lg shadow-xl overflow-hidden border border-gray-100">
-                    <div class="p-6 border-b flex justify-between items-center bg-gray-50">
-                        <h3 class="text-xl font-bold text-gray-800">Riwayat Laporan</h3>
-                        <button onclick="syncDataFromCloud()" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">Update Data</button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-blue-900 text-white">
-                                <tr>
-                                    <th class="px-6 py-4 text-xs font-bold uppercase">BKU</th>
-                                    <th class="px-6 py-4 text-xs font-bold uppercase">Tanggal</th>
-                                    <th class="px-6 py-4 text-xs font-bold uppercase">Penerima</th>
-                                    <th class="px-6 py-4 text-xs font-bold uppercase">Jumlah</th>
-                                    <th class="px-6 py-4 text-xs font-bold uppercase text-center">Opsi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="laporan-body" class="divide-y divide-gray-100">
-                                <tr><td colspan="5" class="px-6 py-10 text-center text-gray-400 italic">Memuat data dari...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-            
+            <!-- Penanggung Jawab -->
             <section id="page-penanggung-jawab" class="hidden">
-                 <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto border border-gray-100">
-                    <h3 class="text-xl font-bold mb-6 text-blue-900 border-b pb-4">Data Pejabat Penandatangan</h3>
-                    <form id="form-pj" class="space-y-5">
-                        <div class="grid grid-cols-1 gap-4">
+                <div class="bg-white rounded-lg shadow p-6 max-w-2xl mx-auto">
+                    <h3 class="text-xl font-semibold mb-6 text-blue-900 border-b pb-2">Data Penanggung Jawab</h3>
+                    <form id="form-pj" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider">Nama Kepala Sekolah</label>
-                                <input type="text" id="ks_nama" class="mt-1 block w-full border rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <label class="block text-sm font-medium text-gray-700">Nama Kepala Sekolah</label>
+                                <input type="text" id="ks_nama" class="mt-1 block w-full border rounded-md p-2">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider">NIP Kepala Sekolah</label>
-                                <input type="text" id="ks_nip" class="mt-1 block w-full border rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                            </div>
-                            <div class="border-t pt-4 mt-2">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider">Nama Bendahara</label>
-                                <input type="text" id="bd_nama" class="mt-1 block w-full border rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <label class="block text-sm font-medium text-gray-700">NIP Kepala Sekolah</label>
+                                <input type="text" id="ks_nip" class="mt-1 block w-full border rounded-md p-2">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider">NIP Bendahara</label>
-                                <input type="text" id="bd_nip" class="mt-1 block w-full border rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <label class="block text-sm font-medium text-gray-700">Nama Bendahara</label>
+                                <input type="text" id="bd_nama" class="mt-1 block w-full border rounded-md p-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">NIP Bendahara</label>
+                                <input type="text" id="bd_nip" class="mt-1 block w-full border rounded-md p-2">
                             </div>
                         </div>
-                        <button type="button" onclick="savePJ()" class="w-full bg-blue-700 text-white py-3 rounded-xl font-bold hover:bg-blue-800 shadow-lg transform active:scale-95 transition-all mt-4">Simpan</button>
+                        <button type="button" onclick="savePJ()" class="w-full bg-blue-700 text-white py-2 rounded-md hover:bg-blue-800 transition">Simpan Data</button>
                     </form>
                 </div>
             </section>
 
+            <!-- Form Kuitansi -->
             <section id="page-kuitansi" class="hidden">
-                 <div class="bg-white rounded-lg shadow p-6 max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow p-6 max-w-4xl mx-auto">
                     <h3 class="text-xl font-semibold mb-6 text-blue-900 border-b pb-2">Buat Kuitansi Baru</h3>
                     <form id="form-kuitansi" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -182,6 +167,10 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Kode Rekening</label>
                                 <input type="text" id="kode_rek" required class="mt-1 block w-full border rounded-md p-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Sudah Terima Dari</label>
+                                <input type="text" id="pemberi" value="Bendahara BOS" readonly class="mt-1 block w-full border bg-gray-100 rounded-md p-2">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Jumlah Uang (Rp)</label>
@@ -195,27 +184,70 @@
                                 <label class="block text-sm font-medium text-gray-700">Untuk Pembayaran</label>
                                 <textarea id="untuk" required rows="3" class="mt-1 block w-full border rounded-md p-2"></textarea>
                             </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <h4 class="font-semibold text-gray-700 mb-3 uppercase text-xs tracking-wider">Dasar Pengenaan Pajak (DPP) & Pajak</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 uppercase">DPP (Rp)</label>
+                                    <input type="number" id="dpp" value="0" class="mt-1 block w-full border rounded-md p-2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 uppercase">PPN (Rp)</label>
+                                    <input type="number" id="ppn" value="0" class="mt-1 block w-full border rounded-md p-2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 uppercase">PPh 23 (Rp)</label>
+                                    <input type="number" id="pph23" value="0" class="mt-1 block w-full border rounded-md p-2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 uppercase">PPh 21 (Rp)</label>
+                                    <input type="number" id="pph21" value="0" class="mt-1 block w-full border rounded-md p-2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 uppercase">Pajak Daerah (Rp)</label>
+                                    <input type="number" id="pjk_daerah" value="0" class="mt-1 block w-full border rounded-md p-2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Penerima</label>
+                                <label class="block text-sm font-medium text-gray-700">Yang Menerima</label>
                                 <input type="text" id="penerima_nama" required class="mt-1 block w-full border rounded-md p-2">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Tanggal</label>
+                                <label class="block text-sm font-medium text-gray-700">Tanggal Kuitansi</label>
                                 <input type="date" id="tgl_kuitansi" required class="mt-1 block w-full border rounded-md p-2">
                             </div>
                         </div>
-                        
-                        <div class="border-t pt-4 mt-4 grid grid-cols-2 md:grid-cols-5 gap-2">
-                             <div class="col-span-full mb-2"><span class="text-xs font-bold text-gray-500 uppercase">Input Pajak (Opsional)</span></div>
-                             <input type="number" id="dpp" placeholder="DPP" class="border p-2 rounded text-sm">
-                             <input type="number" id="ppn" placeholder="PPN" class="border p-2 rounded text-sm">
-                             <input type="number" id="pph23" placeholder="PPh 23" class="border p-2 rounded text-sm">
-                             <input type="number" id="pph21" placeholder="PPh 21" class="border p-2 rounded text-sm">
-                             <input type="number" id="pjk_daerah" placeholder="Pjk Daer" class="border p-2 rounded text-sm">
-                        </div>
 
-                        <button type="button" onclick="saveKuitansi()" class="w-full bg-blue-700 text-white py-3 rounded-lg font-bold shadow-md hover:bg-blue-800 transition">Simpan</button>
+                        <button type="button" onclick="saveKuitansi()" class="w-full bg-blue-700 text-white py-3 rounded-lg font-bold shadow-md hover:bg-blue-800 transition">Simpan Kuitansi</button>
                     </form>
+                </div>
+            </section>
+
+            <!-- Laporan Kuitansi -->
+            <section id="page-laporan" class="hidden">
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-6 border-b flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-gray-800">Daftar Laporan Kuitansi</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 border-b">
+                                <tr>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">No BKU</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Tanggal</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Penerima</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Jumlah</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="laporan-body" class="divide-y divide-gray-100"></tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
         </div>
@@ -224,119 +256,88 @@
     <div id="toast" class="fixed bottom-10 right-10 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-2xl opacity-0 transition-opacity pointer-events-none z-[110]"></div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxiwRQjL5Psg3T5E_syXsVDX1BjBcF9yGuqDgSw8KPjmKjjws5N_OZBXi2VIGcxrPq/exec"; 
-        const LOGIN_CONFIG = { username: "SDN23AJ", password: "12345" };
-
-        let appData = {
-            pj: { ks_nama: '', ks_nip: '', bd_nama: '', bd_nip: '' },
-            kuitansi: [],
-            isLoggedIn: localStorage.getItem('bos_cloud_isLoggedIn') === 'true'
+        const LOGIN_CONFIG = {
+            username: "SDN23AJ",
+            password: "12345"
         };
 
-        const loader = document.getElementById('loading-overlay');
+        const LOGO_SEKOLAH = "https://iili.io/fO9YzBt.png";
+        const LOGO_LEFT = "https://iili.io/3QUsMEx.png";
+        const LOGO_RIGHT = "https://iili.io/fNtsRrg.png";
+
+        let appData = {
+            pj: JSON.parse(localStorage.getItem('bos_pj')) || { ks_nama: '', ks_nip: '', bd_nama: '', bd_nip: '' },
+            kuitansi: JSON.parse(localStorage.getItem('bos_kuitansi')) || [],
+            isLoggedIn: localStorage.getItem('bos_isLoggedIn') === 'true'
+        };
+
+        const loginScreen = document.getElementById('login-screen');
+        const loginForm = document.getElementById('login-form');
+        const mainSidebar = document.getElementById('main-sidebar');
+        const mainContent = document.getElementById('main-content');
+        const userDropdown = document.getElementById('user-dropdown');
 
         document.addEventListener('DOMContentLoaded', () => {
-            if(appData.isLoggedIn) {
-                showDashboard();
-                syncDataFromCloud();
-            }
+            initApp();
             
-            document.getElementById('login-form').addEventListener('submit', async (e) => {
+            loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const u = document.getElementById('username_input').value.trim();
-                const p = document.getElementById('password_input').value.trim();
+                const u = document.getElementById('username_input').value;
+                const p = document.getElementById('password_input').value;
                 
                 if(u === LOGIN_CONFIG.username && p === LOGIN_CONFIG.password) {
                     appData.isLoggedIn = true;
-                    localStorage.setItem('bos_cloud_isLoggedIn', 'true');
-                    showDashboard();
-                    await syncDataFromCloud();
+                    localStorage.setItem('bos_isLoggedIn', 'true');
+                    initApp();
+                    showToast('Berhasil Masuk!');
                 } else {
-                    alert('Username atau Kata Sandi Salah!');
+                    const err = document.getElementById('login-error');
+                    err.classList.remove('hidden');
+                    setTimeout(() => err.classList.add('hidden'), 3000);
+                }
+            });
+
+            window.addEventListener('click', (e) => {
+                if (!e.target.closest('.relative')) {
+                    userDropdown.classList.add('hidden');
                 }
             });
         });
 
-        function showDashboard() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-sidebar').classList.remove('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-            showPage('beranda');
-        }
-
-        function showLoading(show) {
-            if(loader) loader.classList.toggle('hidden', !show);
-        }
-
-        async function syncDataFromCloud() {
-            if (!SCRIPT_URL || SCRIPT_URL.includes("SCRIPT_URL")) return;
-            showLoading(true);
-            try {
-                const response = await fetch(`${SCRIPT_URL}?t=${Date.now()}`);
-                const cloudData = await response.json();
-                if (cloudData) {
-                    appData.pj = cloudData.pj || appData.pj;
-                    appData.kuitansi = cloudData.kuitansi || [];
-                    loadPJFields();
-                    renderLaporan();
-                    updateStats();
-                }
-            } catch (error) {
-                console.error('Cloud Sync Error:', error);
-                showToast('Gagal Sinkron Cloud');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        async function callCloud(action, data = {}) {
-            showLoading(true);
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action, data, id: data.id })
-                });
-                showToast('Perintah Terkirim...');
-                setTimeout(() => syncDataFromCloud(), 2000);
-            } catch (error) {
-                showToast('Gagal Menghubungi Server');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        function loadPJFields() {
-            ['ks_nama', 'ks_nip', 'bd_nama', 'bd_nip'].forEach(f => {
-                const el = document.getElementById(f);
-                if(el) el.value = appData.pj[f] || '';
-            });
-        }
-
-        function renderLaporan() {
-            const tbody = document.getElementById('laporan-body');
-            if(!tbody) return;
-            tbody.innerHTML = '';
-            if (appData.kuitansi && appData.kuitansi.length > 0) {
-                [...appData.kuitansi].sort((a,b) => b.id - a.id).forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-gray-50 transition";
-                    tr.innerHTML = `
-                        <td class="px-6 py-4 font-bold text-blue-900">${item.bku || '-'}</td>
-                        <td class="px-6 py-4 text-sm">${formatDateIndo(item.tanggalFormat || item.tanggal)}</td>
-                        <td class="px-6 py-4 text-sm">${item.penerima || '-'}</td>
-                        <td class="px-6 py-4 font-bold">Rp ${Number(item.jumlah || 0).toLocaleString('id-ID')}</td>
-                        <td class="px-6 py-4 text-center space-x-1">
-                            <button onclick="downloadPDF(${item.id})" class="bg-green-600 text-white px-2 py-1 rounded text-[10px] uppercase font-bold hover:bg-green-700">PDF</button>
-                            <button onclick="deleteKuitansi(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded text-[10px] uppercase font-bold hover:bg-red-600">Hapus</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+        function initApp() {
+            if (appData.isLoggedIn) {
+                loginScreen.classList.add('hidden');
+                mainSidebar.classList.remove('hidden');
+                mainContent.classList.remove('hidden');
+                document.getElementById('current-date-display').innerText = formatDateIndo(new Date());
+                loadPJFields();
+                showPage('beranda');
+                updateStats();
             } else {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-10 text-center text-gray-400 italic">Database Cloud Kosong</td></tr>';
+                loginScreen.classList.remove('hidden');
+                mainSidebar.classList.add('hidden');
+                mainContent.classList.add('hidden');
             }
+        }
+
+        function toggleUserDropdown() {
+            userDropdown.classList.toggle('hidden');
+        }
+
+        function logout() {
+            if(confirm('Apakah Anda yakin ingin keluar?')) {
+                appData.isLoggedIn = false;
+                localStorage.setItem('bos_isLoggedIn', 'false');
+                userDropdown.classList.add('hidden');
+                initApp();
+            }
+        }
+
+        function formatDateIndo(dateStr) {
+            if(!dateStr) return "";
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const d = new Date(dateStr);
+            return `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
         }
 
         function showPage(pageId) {
@@ -344,64 +345,26 @@
             document.getElementById('page-' + pageId).classList.remove('hidden');
             document.querySelectorAll('aside button').forEach(b => b.classList.remove('sidebar-active'));
             document.getElementById('nav-' + pageId).classList.add('sidebar-active');
-            document.getElementById('page-title').innerText = pageId.replace('-', ' ').toUpperCase();
+            document.getElementById('page-title').innerText = pageId.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+            if(pageId === 'laporan') renderLaporan();
         }
 
-        async function savePJ() {
-            const data = {
+        function loadPJFields() {
+            document.getElementById('ks_nama').value = appData.pj.ks_nama;
+            document.getElementById('ks_nip').value = appData.pj.ks_nip;
+            document.getElementById('bd_nama').value = appData.pj.bd_nama;
+            document.getElementById('bd_nip').value = appData.pj.bd_nip;
+        }
+
+        function savePJ() {
+            appData.pj = {
                 ks_nama: document.getElementById('ks_nama').value,
                 ks_nip: document.getElementById('ks_nip').value,
                 bd_nama: document.getElementById('bd_nama').value,
                 bd_nip: document.getElementById('bd_nip').value
             };
-            await callCloud('savePJ', data);
-        }
-
-        async function saveKuitansi() {
-            const form = document.getElementById('form-kuitansi');
-            if(!form.checkValidity()) { form.reportValidity(); return; }
-            const k = {
-                id: Date.now(),
-                bku: document.getElementById('bku_no').value,
-                rek: document.getElementById('kode_rek').value,
-                jumlah: parseFloat(document.getElementById('jumlah_rp').value),
-                terbilang: document.getElementById('terbilang').value,
-                untuk: document.getElementById('untuk').value,
-                penerima: document.getElementById('penerima_nama').value,
-                tanggal: document.getElementById('tgl_kuitansi').value,
-                tanggalFormat: formatDateIndo(document.getElementById('tgl_kuitansi').value),
-                dpp: parseFloat(document.getElementById('dpp').value) || 0,
-                ppn: parseFloat(document.getElementById('ppn').value) || 0,
-                pph23: parseFloat(document.getElementById('pph23').value) || 0,
-                pph21: parseFloat(document.getElementById('pph21').value) || 0,
-                pjk_daerah: parseFloat(document.getElementById('pjk_daerah').value) || 0,
-                pemberi: 'Bendahara BOS'
-            };
-            await callCloud('saveKuitansi', k);
-            form.reset();
-            showPage('laporan');
-        }
-
-        async function deleteKuitansi(id) {
-            if(confirm('Hapus data ini secara permanen?')) await callCloud('deleteKuitansi', { id });
-        }
-
-        function updateStats() {
-            document.getElementById('stat-total').innerText = appData.kuitansi.length;
-            const sum = appData.kuitansi.reduce((a, c) => a + Number(c.jumlah || 0), 0);
-            document.getElementById('stat-amount').innerText = 'Rp ' + sum.toLocaleString('id-ID');
-        }
-
-        function formatDateIndo(dateStr) {
-            if(!dateStr) return "";
-            const cleanDateStr = dateStr.includes('T') ? dateStr.split('T')[0] : dateStr;
-            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            const d = new Date(cleanDateStr);
-            if (isNaN(d.getTime())) return dateStr; 
-            const tgl = d.getDate().toString().padStart(2, '0');
-            const bln = months[d.getMonth()];
-            const thn = d.getFullYear();
-            return `${tgl} ${bln} ${thn}`;
+            localStorage.setItem('bos_pj', JSON.stringify(appData.pj));
+            showToast('Data Penanggung Jawab Disimpan');
         }
 
         function updateTerbilang() {
@@ -420,147 +383,195 @@
             else if (nilai < 1000) temp = angkaKeTerbilang(Math.floor(nilai / 100)) + " Ratus" + angkaKeTerbilang(nilai % 100);
             else if (nilai < 2000) temp = " Seribu" + angkaKeTerbilang(nilai - 1000);
             else if (nilai < 1000000) temp = angkaKeTerbilang(Math.floor(nilai / 1000)) + " Ribu" + angkaKeTerbilang(nilai % 1000);
+            else if (nilai < 1000000000) temp = angkaKeTerbilang(Math.floor(nilai / 1000000)) + " Juta" + angkaKeTerbilang(nilai % 1000000);
             return temp;
+        }
+
+        function saveKuitansi() {
+            const form = document.getElementById('form-kuitansi');
+            if(!form.checkValidity()) { form.reportValidity(); return; }
+
+            const kuitansi = {
+                id: Date.now(),
+                bku: document.getElementById('bku_no').value,
+                rek: document.getElementById('kode_rek').value,
+                pemberi: 'Bendahara BOS', 
+                jumlah: parseFloat(document.getElementById('jumlah_rp').value),
+                terbilang: document.getElementById('terbilang').value,
+                untuk: document.getElementById('untuk').value,
+                dpp: parseFloat(document.getElementById('dpp').value) || 0,
+                ppn: parseFloat(document.getElementById('ppn').value) || 0,
+                pph23: parseFloat(document.getElementById('pph23').value) || 0,
+                pph21: parseFloat(document.getElementById('pph21').value) || 0,
+                pjk_daerah: parseFloat(document.getElementById('pjk_daerah').value) || 0,
+                penerima: document.getElementById('penerima_nama').value,
+                tanggalFormat: formatDateIndo(document.getElementById('tgl_kuitansi').value)
+            };
+
+            appData.kuitansi.unshift(kuitansi);
+            localStorage.setItem('bos_kuitansi', JSON.stringify(appData.kuitansi));
+            form.reset();
+            updateStats();
+            showPage('laporan');
+            showToast('Kuitansi Berhasil Dibuat');
+        }
+
+        function renderLaporan() {
+            const tbody = document.getElementById('laporan-body');
+            tbody.innerHTML = '';
+            appData.kuitansi.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-medium">${item.bku}</td>
+                    <td class="px-6 py-4">${item.tanggalFormat}</td>
+                    <td class="px-6 py-4">${item.penerima}</td>
+                    <td class="px-6 py-4 font-semibold">Rp ${item.jumlah.toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4 text-center space-x-2">
+                        <button onclick="previewKuitansi(${item.id})" class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200 transition">Lihat</button>
+                        <button onclick="downloadPDF(${item.id})" class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 transition">PDF</button>
+                        <button onclick="deleteKuitansi(${item.id})" class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteKuitansi(id) {
+            if(confirm('Hapus kuitansi ini?')) {
+                appData.kuitansi = appData.kuitansi.filter(k => k.id !== id);
+                localStorage.setItem('bos_kuitansi', JSON.stringify(appData.kuitansi));
+                renderLaporan();
+                updateStats();
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').innerText = appData.kuitansi.length;
+            const sum = appData.kuitansi.reduce((acc, curr) => acc + curr.jumlah, 0);
+            document.getElementById('stat-amount').innerText = 'Rp ' + sum.toLocaleString('id-ID');
         }
 
         function showToast(msg) {
             const t = document.getElementById('toast');
-            if(!t) return;
-            t.innerText = msg; t.classList.remove('opacity-0');
+            t.innerText = msg;
+            t.classList.remove('opacity-0');
             setTimeout(() => t.classList.add('opacity-0'), 3000);
         }
 
-        function logout() {
-            localStorage.setItem('bos_cloud_isLoggedIn', 'false');
-            location.reload();
-        }
-
-        function getImageFromUrl(url) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = 'Anonymous';
-                img.onload = () => resolve(img);
-                img.onerror = reject;
-                img.src = url;
-            });
-        }
-
         async function downloadPDF(id) {
-            showLoading(true);
+            const data = appData.kuitansi.find(k => k.id === id);
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', [215.9, 355.6]);
+            doc.setFont('serif');
+
             try {
-                const data = appData.kuitansi.find(k => k.id == id);
-                const pj = appData.pj;
-                if(!data) return;
-                
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('p', 'mm', [215.9, 355.6]);
-                
-                const logoLeftUrl = "https://iili.io/3QUsMEx.png"; 
-                const logoRightUrl = "https://iili.io/feuGkfp.png"; 
+                doc.addImage(LOGO_LEFT, 'PNG', 20, 15, 25, 25);
+                doc.addImage(LOGO_RIGHT, 'PNG', 170, 15, 25, 25);
+            } catch (e) {}
 
-                try {
-                    const [imgLeft, imgRight] = await Promise.all([
-                        getImageFromUrl(logoLeftUrl),
-                        getImageFromUrl(logoRightUrl)
-                    ]);
-                    doc.addImage(imgLeft, 'PNG', 20, 15, 22, 22);
-                    doc.addImage(imgRight, 'PNG', 174, 15, 22, 22);
-                } catch (e) {
-                    console.warn("Logo Gagal Dimuat", e);
-                }
+            doc.setFontSize(14).setFont('serif', 'bold').text('PEMERINTAH KABUPATEN PESISIR SELATAN', 108, 20, { align: 'center' });
+            doc.text('DINAS PENDIDIKAN DAN KEBUDAYAAN', 108, 27, { align: 'center' });
+            doc.setFontSize(16).text('UPT SDN 23 APA JAYA KECAMATAN BAYANG', 108, 35, { align: 'center' });
+            doc.setFontSize(10).setFont('serif', 'normal').text('Jln. Apa Jaya, Gmail: UPTsdn23apajaya@gmail.com, Kode Pos : 25652', 108, 41, { align: 'center' });
+            doc.setLineWidth(1).line(20, 45, 196, 45);
+            doc.setLineWidth(0.2).line(20, 46.5, 196, 46.5);
 
-                doc.setFont('times');
-                doc.setFontSize(14).setFont('times', 'bold').text('PEMERINTAH KABUPATEN PESISIR SELATAN', 108, 18, { align: 'center' });
-                doc.text('DINAS PENDIDIKAN', 108, 24, { align: 'center' });
-                doc.setFontSize(15).text('UPT SDN 23 APA JAYA', 108, 30, { align: 'center' });
-                doc.text('KECAMATAN BAYANG', 108, 36, { align: 'center' });
-                
-                doc.setTextColor(0, 0, 255); 
-                doc.setFontSize(10).setFont('times', 'italic');
-                doc.text('Apa Jaya, kenagarian kapeh Panji jaya, Email : 23apajaya@gmail.com', 108, 41, { align: 'center' });
-                doc.setTextColor(0, 0, 0);
-                
-                doc.setLineWidth(0.8).line(20, 44, 196, 44);
-                doc.setLineWidth(0.2).line(20, 45, 196, 45);
+            doc.setFontSize(16).setFont('serif', 'bold').text('KUITANSI', 108, 58, { align: 'center' });
+            doc.setFontSize(11).setFont('serif', 'normal');
+            
+            let y = 70;
+            doc.text('Nomor BKU', 25, y); doc.text(': ' + data.bku, 65, y); y += 8;
+            doc.text('Kode Rekening', 25, y); doc.text(': ' + data.rek, 65, y); y += 8;
+            doc.text('Sudah Terima Dari', 25, y); doc.text(': ' + data.pemberi, 65, y); y += 8;
+            doc.text('Uang Sejumlah', 25, y); doc.text(': Rp ' + data.jumlah.toLocaleString('id-ID'), 65, y); y += 8;
+            doc.setFont('serif', 'italic').text('Terbilang', 25, y);
+            const splitT = doc.splitTextToSize(': ' + data.terbilang, 130);
+            doc.text(splitT, 65, y); y += (splitT.length * 6);
+            doc.setFont('serif', 'normal').text('Untuk Pembayaran', 25, y);
+            const splitU = doc.splitTextToSize(': ' + data.untuk, 130);
+            doc.text(splitU, 65, y); y += (splitU.length * 6) + 5;
 
-                doc.setFontSize(14).setFont('times', 'bold').text('KUITANSI', 108, 55, { align: 'center' });
-                
-                let y = 65;
-                doc.setFontSize(12).setFont('times', 'normal');
-                const labelX = 25;
-                const valueX = 65;
-                
-                doc.text('Nomor BKU', labelX, y); doc.text(': ' + (data.bku || '-'), valueX, y); y += 8;
-                doc.text('Kode Rekening', labelX, y); doc.text(': ' + (data.rek || '-'), valueX, y); y += 8;
-                doc.text('Sudah Terima Dari', labelX, y); doc.text(': ' + (data.pemberi || 'Bendahara BOS'), valueX, y); y += 8;
-                doc.text('Uang Sejumlah', labelX, y); 
-                doc.setFont('times', 'bold').text(': Rp ' + Number(data.jumlah).toLocaleString('id-ID'), valueX, y); y += 8;
-                
-                doc.setFont('times', 'italic').text('Terbilang', labelX, y);
-                const terbilangLines = doc.splitTextToSize(': ' + (data.terbilang || '-'), 130);
-                doc.text(terbilangLines, valueX, y);
-                y += (terbilangLines.length * 6) + 2;
+            doc.rect(25, y, 165, 35);
+            doc.setFont('serif', 'bold').text('Perhitungan Pajak:', 30, y + 7);
+            doc.setFont('serif', 'normal');
+            doc.text(`DPP: Rp ${data.dpp.toLocaleString('id-ID')}`, 30, y + 15);
+            doc.text(`PPN: Rp ${data.ppn.toLocaleString('id-ID')}`, 30, y + 22);
+            doc.text(`Pajak Daerah: Rp ${data.pjk_daerah.toLocaleString('id-ID')}`, 30, y + 29);
+            doc.text(`PPh 23: Rp ${data.pph23.toLocaleString('id-ID')}`, 110, y + 15);
+            doc.text(`PPh 21: Rp ${data.pph21.toLocaleString('id-ID')}`, 110, y + 22);
+            y += 50;
 
-                doc.setFont('times', 'normal').text('Untuk Pembayaran', labelX, y);
-                const untukLines = doc.splitTextToSize(': ' + (data.untuk || '-'), 130);
-                doc.text(untukLines, valueX, y);
-                y += (untukLines.length * 6) + 10;
+            doc.text('Apa Jaya, ' + data.tanggalFormat, 130, y);
+            doc.text('Yang Menerima,', 130, y + 6);
+            doc.setFont('serif', 'bold').text(data.penerima, 130, y + 30);
+            doc.line(130, y + 31, 186, y + 31);
 
-                doc.setFont('times', 'bold').text('Rincian Pajak:', labelX, y);
-                y += 6;
-                doc.setFont('times', 'normal');
-                const formatRp = (val) => 'Rp ' + (parseFloat(val) || 0).toLocaleString('id-ID');
-                doc.text('- DPP', labelX + 5, y); doc.text(': ' + formatRp(data.dpp), valueX, y); y += 6;
-                doc.text('- PPN', labelX + 5, y); doc.text(': ' + formatRp(data.ppn), valueX, y); y += 6;
-                doc.text('- PPh 21', labelX + 5, y); doc.text(': ' + formatRp(data.pph21), valueX, y); y += 6;
-                doc.text('- PPh 23', labelX + 5, y); doc.text(': ' + formatRp(data.pph23), valueX, y); y += 6;
-                doc.text('- Pajak Daerah', labelX + 5, y); doc.text(': ' + formatRp(data.pjk_daerah), valueX, y); y += 15;
+            const y2 = y + 45;
+            doc.setFont('serif', 'normal').text('Mengetahui,', 30, y2);
+            doc.text('Kepala Sekolah', 30, y2 + 6);
+            doc.setFont('serif', 'bold').text(appData.pj.ks_nama || '................................', 30, y2 + 30);
+            doc.setFont('serif', 'normal').text('NIP. ' + (appData.pj.ks_nip || '................................'), 30, y2 + 35);
 
-                const colLeft = 25;   
-                const colRight = 135; 
-                doc.setFontSize(11);
-                
-                const tglBersih = formatDateIndo(data.tanggalFormat || data.tanggal);
-                doc.text('Apa Jaya, ' + tglBersih, colRight, y);
-                y += 5;
-                doc.text('Yang Menerima,', colRight, y);
-                y += 20;
-                doc.setFont('times', 'bold').text(data.penerima || '..............................', colRight, y);
-                y += 15; 
+            doc.text('Bendahara BOS', 130, y2 + 6);
+            doc.setFont('serif', 'bold').text(appData.pj.bd_nama || '................................', 130, y2 + 30);
+            doc.setFont('serif', 'normal').text('NIP. ' + (appData.pj.bd_nip || '................................'), 130, y2 + 35);
 
-                doc.setFont('times', 'normal').text('Setuju Dibayar,', colLeft, y);
-                doc.text('Bendahara BOS,', colRight, y);
-                y += 5;
-                doc.text('Kepala Sekolah,', colLeft, y);
-                y += 20; 
-                doc.setFont('times', 'bold').text(pj.ks_nama || '..............................', colLeft, y);
-                doc.text(pj.bd_nama || '..............................', colRight, y);
-                y += 5;
-                doc.setFont('times', 'normal');
-                doc.text('NIP. ' + (pj.ks_nip || '..............................'), colLeft, y);
-                doc.text('NIP. ' + (pj.bd_nip || '..............................'), colRight, y);
-                
-                const footerY = 345; 
-                doc.setFontSize(8);
-                doc.setFont('times', 'italic');
-                doc.setTextColor(150, 150, 150); 
-                
-                doc.text(`Referensi BKU: ${data.bku || 'N/A'}`, 20, footerY);
-                
-                const now = new Date();
-                const printTime = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                doc.text(`Dicetak melalui Sistem Manajemen BOS SDN 23 pada: ${printTime} WIB`, 196, footerY, { align: 'right' });
-                
-                doc.save(`Kuitansi_${data.bku}_${data.penerima}.pdf`);
-            } catch (err) {
-                console.error(err);
-                showToast("Gagal mengunduh PDF");
-            } finally {
-                showLoading(false);
-            }
+            doc.save(`Kuitansi_${data.bku}.pdf`);
+        }
+
+        function previewKuitansi(id) {
+            const data = appData.kuitansi.find(k => k.id === id);
+            const w = window.open('', '_blank');
+            w.document.write(`
+                <html>
+                <head><style>
+                    body { font-family: 'Cambria', serif; padding: 40px; }
+                    .header { position: relative; text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 20px; min-height: 100px; }
+                    .logo-l { position: absolute; left: 0; top: 0; height: 90px; }
+                    .logo-r { position: absolute; right: 0; top: 0; height: 90px; }
+                    .row { display: flex; margin-bottom: 8px; }
+                    .label { width: 180px; }
+                    .footer { margin-top: 40px; display: flex; justify-content: space-between; }
+                    .menerima-wrapper { display: flex; justify-content: flex-end; width: 100%; margin-bottom: 40px; }
+                    .pajak-box { border: 1px solid #000; padding: 10px; margin: 15px 0; width: 400px; }
+                </style></head>
+                <body>
+                    <div class="header">
+                        <img src="${LOGO_LEFT}" class="logo-l" alt="Logo Kiri">
+                        <img src="${LOGO_RIGHT}" class="logo-r" alt="Logo Kanan">
+                        <h3 style="margin:2px 0;">PEMERINTAH KABUPATEN PESISIR SELATAN</h3>
+                        <h3 style="margin:2px 0;">DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
+                        <h2 style="margin:5px 0;">UPT SDN 23 APA JAYA KECAMATAN BAYANG</h2>
+                        <p style="margin:2px 0; font-size:12px;">Jln. Apa Jaya, Gmail: UPTsdn23apajaya@gmail.com, Kode Pos : 25652</p>
+                    </div>
+                    <h2 style="text-align:center; text-decoration:underline;">KUITANSI</h2>
+                    <div class="row"><div class="label">Nomor BKU</div><div>: ${data.bku}</div></div>
+                    <div class="row"><div class="label">Sudah Terima Dari</div><div>: ${data.pemberi}</div></div>
+                    <div class="row"><div class="label">Uang Sejumlah</div><div>: <b>Rp ${data.jumlah.toLocaleString('id-ID')}</b></div></div>
+                    <div class="row"><div class="label">Terbilang</div><div>: <i>${data.terbilang}</i></div></div>
+                    <div class="row"><div class="label">Untuk Pembayaran</div><div>: ${data.untuk}</div></div>
+                    
+                    <div class="pajak-box">
+                        <strong>Perhitungan Pajak:</strong><br>
+                        DPP: Rp ${data.dpp.toLocaleString('id-ID')} &nbsp;&nbsp;&nbsp; PPh 23: Rp ${data.pph23.toLocaleString('id-ID')}<br>
+                        PPN: Rp ${data.ppn.toLocaleString('id-ID')} &nbsp;&nbsp;&nbsp; PPh 21: Rp ${data.pph21.toLocaleString('id-ID')}<br>
+                        Pajak Daerah: Rp ${data.pjk_daerah.toLocaleString('id-ID')}
+                    </div>
+
+                    <div class="menerima-wrapper">
+                        <div style="width:300px;">
+                            Apa Jaya, ${data.tanggalFormat}<br>Yang Menerima,<br><br><br><br>
+                            <strong style="text-decoration:underline;">${data.penerima}</strong>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <div>Mengetahui,<br>Kepala Sekolah<br><br><br><br><strong>${appData.pj.ks_nama}</strong><br>NIP. ${appData.pj.ks_nip}</div>
+                        <div><br>Bendahara BOS<br><br><br><br><strong>${appData.pj.bd_nama}</strong><br>NIP. ${appData.pj.bd_nip}</div>
+                    </div>
+                </body></html>
+            `);
+            w.document.close();
         }
     </script>
 </body>
 </html>
-
-
